@@ -30,7 +30,7 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}> {/* Adjust 'loading' prop if needed */}
         <BrowserRouter>
-
+          {isLoggedIn && <Navbar onLogout={handleLogout} />}
           <Routes>
             <Route path="/" element={<LoginForm />} />
             <Route path="/signup" element={<SignupForm />} />
