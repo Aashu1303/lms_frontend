@@ -3,6 +3,7 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import LaundryForm from './components/LaundryForm';
 import UserForm from './components/userForm';
+import Bucket from './components/bucket';
 import PrevRequest from './components/prevRequest';
 import Profile from './components/profile';
 import { useSelector } from 'react-redux';
@@ -42,6 +43,8 @@ const App = () => {
               path="/laundryform"
               element={isLoggedIn && <Navbar onLogout={handleLogout} /> ? <LaundryForm /> : <Navigate to="/userform" replace />}
             />
+            <Route path="/view-bucket" element={<Bucket />} />
+
             {/* Add more routes as needed for PrevRequest, Profile, etc. */}
           </Routes>
         </BrowserRouter>

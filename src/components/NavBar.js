@@ -10,9 +10,14 @@ const Navbar = ({ onLogout }) => {
         navigate('/');
     };
 
+    const handleViewBucket = () => {
+        navigate('/view-bucket');
+    };
+
     return (
         <nav className="navbar">
             <Link to="/profile" className="navbar-link">Profile</Link>
+            <button onClick={handleViewBucket} className="navbar-button">View Bucket</button>
             <button onClick={handleLogout} className="navbar-button">Logout</button>
         </nav>
     );
