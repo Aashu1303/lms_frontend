@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './css/SignupForm.css';
+import './css/LoginForm.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 const SignupForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -25,7 +25,7 @@ const SignupForm = () => {
             });
 
             console.log('Signup Successful:', response.data);
-            navigate('/login'); // Redirect to login on success
+            navigate('/'); // Redirect to login on success
 
         } catch (error) {
             setIsLoading(false);
@@ -89,6 +89,9 @@ const SignupForm = () => {
                         {isLoading ? 'Signing Up...' : 'Signup'}
                     </button>
                     {errorMessage && <div className="error-message">{errorMessage}</div>}
+                    <Link to="/" className="block text-center text-blue-500 hover:underline">
+                        Have an account? Login
+                    </Link>
                 </form>
             </div>
         </div>

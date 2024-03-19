@@ -1,36 +1,52 @@
-import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import LaundryForm from './components/LaundryForm';
-import { useState } from 'react';
+import UserForm from './components/userForm';
+import PrevRequest from './components/prevRequest';
+import Profile from './components/profile';
+import { useSelector } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './components/utility/store';
+import { Provider } from 'react-redux'; // Import provider
+import "./App.css" // Assuming you have an App.css file
+import Navbar from './components/NavBar';
+import { useDispatch } from 'react-redux';
+import { logout } from './components/utility/authSlice';
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  //console.log('App component rendered. isLoggedIn:', isLoggedIn);
+
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
+
 
   return (
-    <Router>
-      <div>
-        <nav className="bg-gray-800 p-4 text-white">
-          <ul className="flex">
-            <li className="mr-6">
-              <Link to="/" className="hover:text-gray-300">Home</Link>
-            </li>
-            <li className="mr-6">
-              <Link to="/login" className="hover:text-gray-300">Login</Link>
-            </li>
-            <li className="mr-6">
-              <Link to="/signup" className="hover:text-gray-300">Signup</Link>
-            </li>
-          </ul>
-        </nav>
-        <Routes>
-          <Route path="/login" element={<LoginForm setIsLoggedIn={setIsLoggedIn} />} />
-          <Route path="/signup" element={<SignupForm />} />
-          <Route path="/laundryform" element={isLoggedIn ? <LaundryForm /> : <Navigate to="/login" replace />}
-          />
-        </Routes>
-      </div>
-    </Router>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}> {/* Adjust 'loading' prop if needed */}
+        <BrowserRouter>
+
+          <Routes>
+            <Route path="/" element={<LoginForm />} />
+            <Route path="/signup" element={<SignupForm />} />
+            <Route
+              path="/userform"
+              element={isLoggedIn && <Navbar onLogout={handleLogout} /> ? <UserForm /> : <Navigate to="/" replace />}
+            />
+            <Route
+              path="/laundryform"
+              element={isLoggedIn && <Navbar onLogout={handleLogout} /> ? <LaundryForm /> : <Navigate to="/userform" replace />}
+            />
+            {/* Add more routes as needed for PrevRequest, Profile, etc. */}
+          </Routes>
+        </BrowserRouter>
+      </PersistGate>
+    </Provider>
   );
 };
 
